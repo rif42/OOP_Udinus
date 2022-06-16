@@ -36,9 +36,9 @@ public class FormBarang {
 	JButton tblSimpan = new JButton("Simpan");
 	
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://127.0.0.1/transaksi";
+	static final String DB_URL = "jdbc:mysql://127.0.0.1/penjualan";
 	static final String USER = "root";
-	static final String PASS = "";
+	static final String PASS = " ";
 	
 	static Connection conn;
 	static Statement stmt;
@@ -212,7 +212,7 @@ public class FormBarang {
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			stmt = conn.createStatement();
 			
-			String sql = "INSERT INTO barang (kd_brg,nm_brg,satuan,stok_brg,stok_min) VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO barang (kodebarang,nama_brg,satuan,stock_brg,stock_min) VALUES (?,?,?,?,?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
 		
 			ps.setString(1, kode);
@@ -252,11 +252,11 @@ public class FormBarang {
 			while(rs.next())
 			{
 				model.addRow(new Object[] {
-						rs.getString("kd_brg"),
-						rs.getString("nm_brg"),
+						rs.getString("kodebarang"),
+						rs.getString("nama_brg"),
 						rs.getString("satuan"),
-						rs.getString("stok_brg"),
-						rs.getString("stok_min"),
+						rs.getString("stock_brg"),
+						rs.getString("stock_min"),
 				});
 			}
 			
@@ -286,7 +286,7 @@ public class FormBarang {
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			stmt = conn.createStatement();
 			
-			PreparedStatement ps = conn.prepareStatement("UPDATE barang SET nm_brg=?,satuan=?,stok_brg=?,stok_min=? WHERE kd_brg=?");
+			PreparedStatement ps = conn.prepareStatement("UPDATE barang SET nama_brg=?,satuan=?,stock_brg=?,stock_min=? WHERE kodebarang=?");
 			ps.setString(1, nama);
 			ps.setObject(2, satuan);
 			ps.setInt(3, stok);
@@ -315,7 +315,7 @@ public class FormBarang {
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			stmt = conn.createStatement();
 			
-			PreparedStatement ps = conn.prepareStatement("DELETE FROM barang WHERE kd_brg=?");
+			PreparedStatement ps = conn.prepareStatement("DELETE FROM barang WHERE kodebarang=?");
 			ps.setString(1, kode);
 					
 			ps.execute();
@@ -341,18 +341,18 @@ public class FormBarang {
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);
 			stmt = conn.createStatement();
 			
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM barang WHERE kd_brg=?");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM barang WHERE kodebarang=?");
 			ps.setString(1, kode);
 					
 			rs = ps.executeQuery();
 			
 			rs.next();
 			
-			txtKd.setText(rs.getString("kd_brg"));
-			txtNm.setText(rs.getString("nm_brg"));
+			txtKd.setText(rs.getString("kodebarang"));
+			txtNm.setText(rs.getString("nama_brg"));
 			boxSat.setSelectedItem(rs.getString("satuan"));
-			txtStok.setText(rs.getString("stok_brg"));
-			txtStokN.setText(rs.getString("stok_min"));
+			txtStok.setText(rs.getString("stock_brg"));
+			txtStokN.setText(rs.getString("stock_min"));
 			
 			stmt.close();
 			conn.close();
